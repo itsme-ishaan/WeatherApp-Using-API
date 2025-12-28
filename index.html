@@ -52,33 +52,39 @@
     </div>
 
     <script>
-        function getWeather() {
-            const city = document.getElementById("city").value;
-            const apiKey = "a210f25195b1167ad1de6277e750e40b";
-           /* const lat = 28.2473;
-            const lon = 77.0659; */
+       function getWeather() {
+    const city = document.getElementById("city").value.trim();
+    const apiKey = "a210f25195b1167ad1de6277e750e40b";
 
-            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+    if (city === "") {
+        document.getElementById("result").innerHTML = "Please enter a city name";
+        return;
+    }
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.cod === "404") {
-                        document.getElementById("result").innerHTML = "City not found";
-                    } else {
-                        document.getElementById("result").innerHTML = `
-                            <p><b>Temperature:</b> ${data.main.temp} °C</p>
-                            <p><b>Weather:</b> ${data.weather[0].description}</p>
-                            <p><b>Humidity:</b> ${data.main.humidity}%</p>
-                        `;
-                    }
-                })
-                .catch(() => {
-                    document.getElementById("result").innerHTML = "Error fetching data";
-                });
-        }
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.cod === "404") {
+                document.getElementById("result").innerHTML = "City not found";
+            } else {
+                document.getElementById("result").innerHTML = `
+                    <p><b>City:</b> ${data.name}</p>
+                    <p><b>Temperature:</b> ${data.main.temp} °C</p>
+                    <p><b>Weather:</b> ${data.weather[0].description}</p>
+                    <p><b>Humidity:</b> ${data.main.humidity}%</p>
+                `;
+            }
+        })
+        .catch(() => {
+            document.getElementById("result").innerHTML = "Error fetching data";
+        });
+}
+
     </script>
 
 </body>
 </html>
+
 
